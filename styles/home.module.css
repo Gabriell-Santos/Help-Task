@@ -1,0 +1,31 @@
+.container {
+  background-color: black;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.LogoContent {
+  max-width: 430px;
+  object-fit: contain;
+  width: auto;
+  height: auto;
+}
+
+.title {
+  color: white;
+  text-align: center;
+  margin-top: 30px;
+  line-height: 50px;
+  font-size: 23px;
+}
