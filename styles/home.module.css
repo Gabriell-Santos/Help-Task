@@ -49,3 +49,14 @@
   cursor: pointer;
   transform: scale(1.2);
 }
+
+@media screen and (max-width: 580px) {
+  .title {
+    font-size: 15px;
+    line-height: 20px;
+  }
+  .info {
+    flex-direction: column;
+    padding-bottom: 25px;
+  }
+}
