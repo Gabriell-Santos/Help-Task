@@ -17,6 +17,10 @@ export default function Home() {
           Sistema feito para organizar e maximar <br />
           as tarefas do mundo coorporativo
         </h1>
+        <div className={style.info}>
+          <section className={style.previewInfo}>+12 post simultanêos</section>
+          <section className={style.previewInfo}>+ 20 comentarios</section>
+        </div>
       </main>
     </div>
   );

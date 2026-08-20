@@ -29,3 +29,23 @@
   line-height: 50px;
   font-size: 23px;
 }
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.previewInfo {
+  background-color: wheat;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 15px;
+  font-size: 18px;
+  transition: tranform 0.5s;
+}
+
+.previewInfo:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
