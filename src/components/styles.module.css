@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  align-items: center;
+  background-color: darkslateblue;
+  height: 50px;
+}
+.info {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav a {
+  text-decoration: none;
+}
+
+.title {
+  color: white;
+}
+
+.span {
+  color: fuchsia;
+}
+
+.myTask {
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: transform 0.5s;
+}
+
+.myTask:hover {
+  background-color: black;
+  color: white;
+  transform: scale(1.1);
+}
+
+.accont {
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: transform 0.5s;
+}
+
+.accont:hover {
+  background-color: black;
+  color: white;
+  transform: scale(1.1);
+}
