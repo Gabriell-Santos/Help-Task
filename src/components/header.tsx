@@ -1,5 +1,5 @@
 import Link from "next/link";
-import style from "../components/styles.module.css";
+import style from "./styles.module.css";
 export default function Header() {
   return (
     <header className={style.container}>
@@ -12,11 +12,13 @@ export default function Header() {
             </h1>
           </Link>
 
-          <Link href={"/mytask"}>
-            <button className={style.myTask}>Minhas Tarefas</button>
+          <Link href={"/dashboard"}>
+            <button className={style.myTask}>Meu Painel</button>
           </Link>
         </nav>
-        <button className={style.accont}> Minha Conta </button>
+        <Link href={"/account"}>
+          <button className={style.account}> Acessar </button>
+        </Link>
       </div>
     </header>
   );

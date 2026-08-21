@@ -44,14 +44,14 @@
   transform: scale(1.1);
 }
 
-.accont {
+.account {
   padding: 8px;
   border-radius: 8px;
   font-weight: bold;
   transition: transform 0.5s;
 }
 
-.accont:hover {
+.account:hover {
   background-color: black;
   color: white;
   transform: scale(1.1);
