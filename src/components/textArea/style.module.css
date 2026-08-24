@@ -1,0 +1,14 @@
+.textArea {
+  width: 100%;
+  resize: none;
+  height: 120px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  outline: none;
+}
+
+.textArea::placeholder {
+  padding-top: 5px;
+  padding-left: 5px;
+  font-size: 15px;
+}

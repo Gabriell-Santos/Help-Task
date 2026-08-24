@@ -1,0 +1,43 @@
+.container {
+  width: 100%;
+}
+
+.content {
+  background-color: black;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentForm {
+  max-width: 1024px;
+  width: 100%;
+  padding-bottom: 15px;
+  margin-top: 20px;
+}
+
+.title {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.infoCheckbox {
+  margin: 14px 0;
+}
+
+.infoCheckbox label {
+  margin-left: 4px;
+  color: white;
+}
+
+.button {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  background-color: rgb(93, 80, 181);
+  border: none;
+  color: white;
+}
