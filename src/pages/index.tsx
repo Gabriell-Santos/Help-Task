@@ -15,7 +15,7 @@ export default function Home() {
         </div>
         <h1 className={style.title}>
           Sistema feito para organizar e maximar <br />
-          as tarefas do mundo coorporativo
+          as tarefas da sua empresa
         </h1>
         <div className={style.info}>
           <section className={style.previewInfo}>+12 post simultanêos</section>
