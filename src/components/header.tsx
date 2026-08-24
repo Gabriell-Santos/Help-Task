@@ -14,9 +14,11 @@ export default function Header() {
             </h1>
           </Link>
 
-          <Link href={"/dashboard"}>
-            <button className={style.myTask}>Meu Painel</button>
-          </Link>
+          {sesssion?.user && (
+            <Link href={"/dashboard"}>
+              <button className={style.myTask}>Meu Painel</button>
+            </Link>
+          )}
         </nav>
 
         {status === "loading" ? (
