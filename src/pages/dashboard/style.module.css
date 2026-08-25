@@ -41,3 +41,69 @@
   border: none;
   color: white;
 }
+.button:hover {
+  cursor: pointer;
+}
+
+.taskContent {
+  max-width: 1024px;
+  width: 100%;
+  margin: 34px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.taskContent h1 {
+  text-align: center;
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+
+.task {
+  border: 1.5px solid rgb(51, 49, 49);
+  line-height: 150%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 0 0 20px 0;
+}
+
+.tagContent {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.tag {
+  background-color: aqua;
+  padding: 2px 8px;
+  margin-right: 5px;
+  color: black;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.shareButton {
+  background-color: transparent;
+  border: 0;
+}
+
+.taskDescription {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.taskDescription p {
+  white-space: pre-wrap;
+}
+
+.buttonTrash {
+  background-color: transparent;
+  margin: 0 8px;
+  border: none;
+  cursor: pointer;
+}

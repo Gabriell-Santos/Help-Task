@@ -3,6 +3,7 @@
   align-items: center;
   background-color: darkslateblue;
   height: 50px;
+  padding: 5px 0;
 }
 .info {
   max-width: 1024px;

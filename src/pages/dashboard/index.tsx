@@ -4,6 +4,8 @@ import { getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { redirect } from "next/dist/server/api-utils";
 import { TextArea } from "@/components/textArea";
+import { FiShare2 } from "react-icons/fi";
+import { FaTrash } from "react-icons/fa";
 export default function Dashboard() {
   return (
     <div className={style.container}>
@@ -25,6 +27,37 @@ export default function Dashboard() {
               </button>
             </form>
           </div>
+        </section>
+        <section className={style.taskContent}>
+          <h1>Minha Tarefas</h1>
+          <article className={style.task}>
+            <div className={style.tagContent}>
+              <label className={style.tag}>PUBLICA</label>
+              <button className={style.shareButton}>
+                <FiShare2 size={22} color="blue" />
+              </button>
+            </div>
+            <div className={style.taskDescription}>
+              <p> Fazer uma panilha no exel com os dados dos clientes </p>
+              <button className={style.buttonTrash}>
+                <FaTrash size={25} color="red" />
+              </button>
+            </div>
+          </article>
+          <article className={style.task}>
+            <div className={style.tagContent}>
+              <label className={style.tag}>PUBLICA</label>
+              <button className={style.shareButton}>
+                <FiShare2 size={22} color="blue" />
+              </button>
+            </div>
+            <div className={style.taskDescription}>
+              <p> Fazer uma panilha no exel com os dados dos clientes </p>
+              <button className={style.buttonTrash}>
+                <FaTrash size={25} color="red" />
+              </button>
+            </div>
+          </article>
         </section>
       </main>
     </div>
