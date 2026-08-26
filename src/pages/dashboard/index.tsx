@@ -6,7 +6,15 @@ import { redirect } from "next/dist/server/api-utils";
 import { TextArea } from "@/components/textArea";
 import { FiShare2 } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
+import { ChangeEvent, useState } from "react";
 export default function Dashboard() {
+  const [inputTask, setInputTask] = useState("");
+  const [inputPublic, setInputPublic] = useState(false);
+
+  // Função que verifca se a tarefa é publica ou não
+  function handlePublicTask(event: ChangeEvent<HTMLInputElement>) {
+    setInputPublic(event.target.checked);
+  }
   return (
     <div className={style.container}>
       <Head>
@@ -17,9 +25,18 @@ export default function Dashboard() {
           <div className={style.contentForm}>
             <h1 className={style.title}> Qual Sua Tarefa ? </h1>
             <form>
-              <TextArea placeholder="Escreva os detalhes de sua tarefa..." />
+              <TextArea
+                placeholder="Escreva os detalhes de sua tarefa..."
+                value={inputTask}
+                onChange={(e) => setInputTask(e.target.value)}
+              />
               <div className={style.infoCheckbox}>
-                <input type="checkbox" className="checkbox" />
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={inputPublic}
+                  onChange={handlePublicTask}
+                />
                 <label className={style.label}> Deixar tarefa Publica </label>
               </div>
               <button className={style.button} type="submit">

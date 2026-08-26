@@ -5,9 +5,5 @@ import React from "react";
 export function TextArea({
   ...rest
 }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return (
-    <textarea className={style.textArea} {...rest}>
-      {" "}
-    </textarea>
-  );
+  return <textarea className={style.textArea} {...rest}></textarea>;
 }
