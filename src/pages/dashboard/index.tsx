@@ -6,8 +6,17 @@ import { redirect } from "next/dist/server/api-utils";
 import { TextArea } from "@/components/textArea";
 import { FiShare2 } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
-import { ChangeEvent, useState } from "react";
-export default function Dashboard() {
+import React, { ChangeEvent, useState } from "react";
+import { db } from "@/service/connectionFirebase";
+import { addDoc, collection } from "firebase/firestore";
+
+interface UserProps {
+  user: {
+    email: string;
+  };
+}
+
+export default function Dashboard({ user }: UserProps) {
   const [inputTask, setInputTask] = useState("");
   const [inputPublic, setInputPublic] = useState(false);
 
@@ -15,6 +24,28 @@ export default function Dashboard() {
   function handlePublicTask(event: ChangeEvent<HTMLInputElement>) {
     setInputPublic(event.target.checked);
   }
+
+  // Função que registra a tarefa no banco
+
+  async function HandleRegisterTask(event: React.FormEvent) {
+    event.preventDefault();
+    if (inputTask === "") return alert("campo tarefa em branco :)");
+    // registrando tarefa
+    try {
+      await addDoc(collection(db, "Tarefas"), {
+        task: inputTask,
+        created: new Date(),
+        EmailUser: user.email,
+        public: inputPublic,
+      });
+
+      setInputPublic(false);
+      setInputTask("");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className={style.container}>
       <Head>
@@ -24,7 +55,7 @@ export default function Dashboard() {
         <section className={style.content}>
           <div className={style.contentForm}>
             <h1 className={style.title}> Qual Sua Tarefa ? </h1>
-            <form>
+            <form onSubmit={HandleRegisterTask}>
               <TextArea
                 placeholder="Escreva os detalhes de sua tarefa..."
                 value={inputTask}
@@ -97,6 +128,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   // Dentro do getServerSideProps sempre tem que retorna algo
   return {
-    props: {},
+    props: {
+      user: {
+        email: session.user.email,
+      },
+    },
   };
 };

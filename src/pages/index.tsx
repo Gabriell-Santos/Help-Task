@@ -1,9 +1,13 @@
 import style from "../../styles/home.module.css";
+import Head from "next/head";
 import heroImg from "../assets/hero.png";
 import Image from "next/image";
 export default function Home() {
   return (
     <div className={style.container}>
+      <Head>
+        <title>Portal Help Task</title>
+      </Head>
       <main className={style.main}>
         <div className={style.logo}>
           <Image
