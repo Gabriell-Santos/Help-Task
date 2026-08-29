@@ -49,7 +49,7 @@ export default function Dashboard({ user }: UserProps) {
       );
 
       // Atualizando o banco sempre que uma nova tarefa é adicionada ou removida
-      onSnapshot(q, (snapshot) => {
+      const unsubscribe = onSnapshot(q, (snapshot) => {
         const list = [] as TaskProps[];
         snapshot.forEach((item) => {
           list.push({
@@ -62,6 +62,10 @@ export default function Dashboard({ user }: UserProps) {
         });
         setTasks(list);
       });
+      // desmontando o listener
+      return () => {
+        unsubscribe();
+      };
     }
     LoadingTask();
   }, [user.email]);
