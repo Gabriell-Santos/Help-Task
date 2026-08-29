@@ -85,6 +85,12 @@
   font-weight: bold;
 }
 
+.taskDescription a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
 .shareButton {
   background-color: transparent;
   border: 0;

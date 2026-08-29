@@ -1,14 +1,24 @@
 import Head from "next/head";
 import style from "./style.module.css";
+import Link from "next/link";
 import { getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { redirect } from "next/dist/server/api-utils";
 import { TextArea } from "@/components/textArea";
 import { FiShare2 } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { db } from "@/service/connectionFirebase";
-import { addDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  where,
+  onSnapshot,
+  query,
+  orderBy,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 
 interface UserProps {
   user: {
@@ -16,9 +26,45 @@ interface UserProps {
   };
 }
 
+interface TaskProps {
+  id: string;
+  task: string;
+  created: Date;
+  EmailUser: string;
+  public: boolean;
+}
+
 export default function Dashboard({ user }: UserProps) {
   const [inputTask, setInputTask] = useState("");
   const [inputPublic, setInputPublic] = useState(false);
+  const [taks, setTasks] = useState<TaskProps[]>([]);
+  // Buscando tarefas ao carregar a página
+  useEffect(() => {
+    async function LoadingTask() {
+      const taskRef = collection(db, "Tarefas");
+      const q = query(
+        taskRef,
+        orderBy("created", "desc"),
+        where("EmailUser", "==", user.email),
+      );
+
+      // Atualizando o banco sempre que uma nova tarefa é adicionada ou removida
+      onSnapshot(q, (snapshot) => {
+        const list = [] as TaskProps[];
+        snapshot.forEach((item) => {
+          list.push({
+            id: item.id,
+            task: item.data().task,
+            created: item.data().created,
+            EmailUser: item.data().EmailUser,
+            public: item.data().public,
+          });
+        });
+        setTasks(list);
+      });
+    }
+    LoadingTask();
+  }, [user.email]);
 
   // Função que verifca se a tarefa é publica ou não
   function handlePublicTask(event: ChangeEvent<HTMLInputElement>) {
@@ -46,6 +92,11 @@ export default function Dashboard({ user }: UserProps) {
     }
   }
 
+  // Deletando Tarefa
+  async function handleDeleteTask(id: string) {
+    const TaskRef = doc(db, "Tarefas", id);
+    await deleteDoc(TaskRef);
+  }
   return (
     <div className={style.container}>
       <Head>
@@ -78,34 +129,33 @@ export default function Dashboard({ user }: UserProps) {
         </section>
         <section className={style.taskContent}>
           <h1>Minha Tarefas</h1>
-          <article className={style.task}>
-            <div className={style.tagContent}>
-              <label className={style.tag}>PUBLICA</label>
-              <button className={style.shareButton}>
-                <FiShare2 size={22} color="blue" />
-              </button>
-            </div>
-            <div className={style.taskDescription}>
-              <p> Fazer uma panilha no exel com os dados dos clientes </p>
-              <button className={style.buttonTrash}>
-                <FaTrash size={25} color="red" />
-              </button>
-            </div>
-          </article>
-          <article className={style.task}>
-            <div className={style.tagContent}>
-              <label className={style.tag}>PUBLICA</label>
-              <button className={style.shareButton}>
-                <FiShare2 size={22} color="blue" />
-              </button>
-            </div>
-            <div className={style.taskDescription}>
-              <p> Fazer uma panilha no exel com os dados dos clientes </p>
-              <button className={style.buttonTrash}>
-                <FaTrash size={25} color="red" />
-              </button>
-            </div>
-          </article>
+          {taks.map((doc) => (
+            <article className={style.task} key={doc.id}>
+              {doc.public && (
+                <div className={style.tagContent}>
+                  <label className={style.tag}>PUBLICA</label>
+                  <button className={style.shareButton}>
+                    <FiShare2 size={22} color="blue" />
+                  </button>
+                </div>
+              )}
+              <div className={style.taskDescription}>
+                {doc.public ? (
+                  <Link href={`/task/${doc.id}`}>
+                    <p> {doc.task} </p>
+                  </Link>
+                ) : (
+                  <p> {doc.task} </p>
+                )}
+                <button
+                  className={style.buttonTrash}
+                  onClick={() => handleDeleteTask(doc.id)}
+                >
+                  <FaTrash size={25} color="red" />
+                </button>
+              </div>
+            </article>
+          ))}
         </section>
       </main>
     </div>
