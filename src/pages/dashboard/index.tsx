@@ -92,6 +92,14 @@ export default function Dashboard({ user }: UserProps) {
     }
   }
 
+  // Funçao de copiar a url
+
+  async function handleShare(id: string) {
+    await navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_PUBLIC}/task/${id}`,
+    );
+  }
+
   // Deletando Tarefa
   async function handleDeleteTask(id: string) {
     const TaskRef = doc(db, "Tarefas", id);
@@ -134,7 +142,10 @@ export default function Dashboard({ user }: UserProps) {
               {doc.public && (
                 <div className={style.tagContent}>
                   <label className={style.tag}>PUBLICA</label>
-                  <button className={style.shareButton}>
+                  <button
+                    className={style.shareButton}
+                    onClick={() => handleShare(doc.id)}
+                  >
                     <FiShare2 size={22} color="blue" />
                   </button>
                 </div>
