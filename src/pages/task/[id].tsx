@@ -3,15 +3,29 @@ import styles from "./styles.module.css";
 import { GetServerSideProps } from "next";
 import { db } from "../../service/connectionFirebase";
 import { doc, collection, where, query, getDoc } from "firebase/firestore";
+import { TextArea } from "../../components/textArea/index";
 export default function Task() {
   return (
-    <div>
+    <div className={styles.container}>
       <Head>
         <title>Detalhes da Tarefa</title>
       </Head>
-      <main>
+      <main className={styles.main}>
         <h1>Tarefas</h1>
+        <article className={styles.task}>
+          <p>descrição da tarefa</p>
+        </article>
       </main>
+      {/* Parte dos comentarios*/}
+      <section className={styles.comments}>
+        <h2>Deixar Comentário</h2>
+        <form>
+          <TextArea placeholder="Escreva seu comentário..." />
+          <button type="submit" className={styles.submitButton}>
+            Enviar Comentário
+          </button>
+        </form>
+      </section>
     </div>
   );
 }
