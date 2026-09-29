@@ -4,7 +4,17 @@ import { GetServerSideProps } from "next";
 import { db } from "../../service/connectionFirebase";
 import { doc, collection, where, query, getDoc } from "firebase/firestore";
 import { TextArea } from "../../components/textArea/index";
-export default function Task() {
+
+// Interface para tipagem das props
+interface TaskProps {
+  item: {
+    task: string;
+    created: string;
+    EmailUser: string;
+    public: boolean;
+  };
+}
+export default function Task({ item }: TaskProps) {
   return (
     <div className={styles.container}>
       <Head>
@@ -13,7 +23,7 @@ export default function Task() {
       <main className={styles.main}>
         <h1>Tarefas</h1>
         <article className={styles.task}>
-          <p>descrição da tarefa</p>
+          <p>{item.task}</p>
         </article>
       </main>
       {/* Parte dos comentarios*/}
@@ -62,8 +72,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     public: snapshot.data()?.public,
     taskId: id,
   };
-  console.log(TaskData);
+
   return {
-    props: {},
+    props: {
+      item: TaskData,
+    },
   };
 };
