@@ -1,8 +1,17 @@
 import Head from "next/head";
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
 import styles from "./styles.module.css";
 import { GetServerSideProps } from "next";
 import { db } from "../../service/connectionFirebase";
-import { doc, collection, where, query, getDoc } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  where,
+  query,
+  getDoc,
+  addDoc,
+} from "firebase/firestore";
 import { TextArea } from "../../components/textArea/index";
 
 // Interface para tipagem das props
@@ -12,9 +21,32 @@ interface TaskProps {
     created: string;
     EmailUser: string;
     public: boolean;
+    taskId: string;
   };
 }
+
 export default function Task({ item }: TaskProps) {
+  const { data: session } = useSession();
+  const [comments, setComments] = useState<string>("");
+
+  // Função para lidar com o envio de comentários
+  async function handleComments(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (comments === "") return;
+    if (!session?.user?.name || !session?.user?.email) return;
+    try {
+      await addDoc(collection(db, "comments"), {
+        comment: comments,
+        taskId: item.taskId,
+        userName: session.user.name,
+        userEmail: session.user.email,
+        created: new Date(),
+      });
+      setComments("");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -29,9 +61,19 @@ export default function Task({ item }: TaskProps) {
       {/* Parte dos comentarios*/}
       <section className={styles.comments}>
         <h2>Deixar Comentário</h2>
-        <form>
-          <TextArea placeholder="Escreva seu comentário..." />
-          <button type="submit" className={styles.submitButton}>
+        <form onSubmit={handleComments}>
+          <TextArea
+            placeholder="Escreva seu comentário..."
+            value={comments}
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+              setComments(event.target.value);
+            }}
+          />
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={!session?.user}
+          >
             Enviar Comentário
           </button>
         </form>
