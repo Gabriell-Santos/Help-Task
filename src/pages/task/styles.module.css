@@ -59,3 +59,40 @@
   background-color: rgb(119, 108, 189);
   cursor: not-allowed;
 }
+
+.comments article {
+  border: 1px solid rgb(119, 108, 189);
+  padding: 14px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+.headerComment {
+  display: flex;
+  align-items: center;
+}
+
+.UserName {
+  background-color: #ccc;
+  padding: 4px 8px;
+  margin-right: 8px;
+  border-radius: 4px;
+}
+
+.deleteButton {
+  padding: 4px 8px;
+  font-weight: bold;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+.deleteButton:hover {
+  background-color: darkred;
+  cursor: pointer;
+}
+
+.comment p {
+  margin-top: 14px;
+  white-space: pre-wrap;
+}

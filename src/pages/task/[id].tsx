@@ -11,6 +11,7 @@ import {
   query,
   getDoc,
   addDoc,
+  getDocs,
 } from "firebase/firestore";
 import { TextArea } from "../../components/textArea/index";
 
@@ -23,11 +24,23 @@ interface TaskProps {
     public: boolean;
     taskId: string;
   };
+  allComments: CommentProps[];
 }
 
-export default function Task({ item }: TaskProps) {
+interface CommentProps {
+  id: string;
+  comment: string;
+  taskId: string;
+  user: string;
+  name: string;
+}
+
+export default function Task({ item, allComments }: TaskProps) {
   const { data: session } = useSession();
   const [comments, setComments] = useState<string>("");
+  const [commentsList, setCommentsList] = useState<CommentProps[]>(
+    allComments || [],
+  );
 
   // Função para lidar com o envio de comentários
   async function handleComments(event: React.FormEvent<HTMLFormElement>) {
@@ -35,13 +48,24 @@ export default function Task({ item }: TaskProps) {
     if (comments === "") return;
     if (!session?.user?.name || !session?.user?.email) return;
     try {
-      await addDoc(collection(db, "comments"), {
+      const docRef = await addDoc(collection(db, "comments"), {
         comment: comments,
         taskId: item.taskId,
         userName: session.user.name,
         userEmail: session.user.email,
         created: new Date(),
       });
+
+      // Atualizando a lista de comentários ao adicionar um novo comentário
+      const data = {
+        id: docRef.id,
+        comment: comments,
+        taskId: item.taskId,
+        user: session.user.email,
+        name: session.user.name,
+      };
+      setCommentsList((oldComments) => [...oldComments, data]);
+
       setComments("");
     } catch (error) {
       console.log(error);
@@ -78,6 +102,21 @@ export default function Task({ item }: TaskProps) {
           </button>
         </form>
       </section>
+      <section className={styles.comments}>
+        <h2>Todos os Comentários</h2>
+        {commentsList.length === 0 && <p>Nenhum comentário existente.</p>}
+        {commentsList.map((doc) => (
+          <article className={styles.comment} key={doc.id}>
+            <div className={styles.headerComment}>
+              <label className={styles.UserName}> {doc.name} </label>
+              {doc.user === session?.user?.email && (
+                <button className={styles.deleteButton}>Excluir</button>
+              )}
+            </div>
+            <p> {doc.comment} </p>
+          </article>
+        ))}
+      </section>
     </div>
   );
 }
@@ -85,6 +124,21 @@ export default function Task({ item }: TaskProps) {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
   const taskRef = doc(db, "Tarefas", id);
+  // Buscando todos os comentários relacionados a tarefa
+  const q = query(collection(db, "comments"), where("taskId", "==", id));
+  const querySnapshot = await getDocs(q);
+
+  let comments: CommentProps[] = [];
+  querySnapshot.forEach((doc) => {
+    comments.push({
+      id: doc.id,
+      comment: doc.data().comment,
+      taskId: doc.data().taskId,
+      user: doc.data().userEmail,
+      name: doc.data().userName,
+    });
+  });
+
   // Buscando dados do banco
   const snapshot = await getDoc(taskRef);
   // Verificando se a tarefa existe
@@ -118,6 +172,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
       item: TaskData,
+      allComments: comments,
     },
   };
 };
