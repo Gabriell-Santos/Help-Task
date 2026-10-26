@@ -12,6 +12,7 @@ import {
   getDoc,
   addDoc,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 import { TextArea } from "../../components/textArea/index";
 
@@ -71,6 +72,19 @@ export default function Task({ item, allComments }: TaskProps) {
       console.log(error);
     }
   }
+
+  // Função para lidar com a exclusão de comentários
+  async function handleDeleteComment(id: string) {
+    try {
+      const docRef = doc(db, "comments", id);
+      await deleteDoc(docRef);
+      const updatedComments = commentsList.filter((item) => item.id !== id);
+      setCommentsList(updatedComments);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -110,7 +124,12 @@ export default function Task({ item, allComments }: TaskProps) {
             <div className={styles.headerComment}>
               <label className={styles.UserName}> {doc.name} </label>
               {doc.user === session?.user?.email && (
-                <button className={styles.deleteButton}>Excluir</button>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => handleDeleteComment(doc.id)}
+                >
+                  Excluir
+                </button>
               )}
             </div>
             <p> {doc.comment} </p>
